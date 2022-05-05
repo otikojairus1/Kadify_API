@@ -125,7 +125,7 @@ class UserController extends Controller
                         ],
                         'Subject' => "KADIFY VERIFICATION OTP",
                         'TextPart' => "Greetings from Kadify!",
-                        'HTMLPart' => "<p>Greetings from Kadify, welcome to our Finance world</p><br />Use ".$otpCode." as your verification code for your Kadify account"
+                        'HTMLPart' => "<h3>Greetings from Kadify,<br> welcome to our Finance world Use<h3> <h1>".$otpCode."</h1> <h3>as your verification code for your Kadify account</h3>"
                     ]
                 ]
             ];
