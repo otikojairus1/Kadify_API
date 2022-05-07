@@ -72,7 +72,7 @@ class UserController extends Controller
      */
 
     public function login(Request $request){ 
-        date_default_timezone_set('Africa/Nairobi');
+       // date_default_timezone_set('Africa/Nairobi');
         $rules = [
           
             'email' => 'required',
@@ -87,7 +87,7 @@ class UserController extends Controller
         }
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
             $user = Auth::user(); 
-            return response()->json(['responseCode'=>200,'userDetails'=>$user, 'loginTime'=>Carbon::now()->toDateTimeString()]); 
+            return response()->json(['responseCode'=>200,'userDetails'=>$user]); 
         } 
         else{ 
             return response()->json(['responseCode'=>401,'error'=>'wrong login credentials']); 
