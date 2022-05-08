@@ -14,11 +14,18 @@ Route::post('/register', [\App\Http\Controllers\UserController::class, "register
 Route::post('/login', [\App\Http\Controllers\UserController::class, "login"]);
 Route::post('/update/verified/phone', [\App\Http\Controllers\UserController::class, "updatephone"]);
 //EQUITY BANK OF KENYA OPEN BANKING V3 (THE JENGAV3 OPEN BANKING APIs)
-Route::post('/equity/bank/openbankingv2/accessToken', [\App\Http\Controllers\EquityBankController::class, "generateAccessToken"]);
-Route::get('/equity/bank/openbankingv2/billers', [\App\Http\Controllers\EquityBankController::class, "allEquityBankBillers"]);
-Route::get('/equity/bank/openbankingv2/merchants', [\App\Http\Controllers\EquityBankController::class, "getAllMerchants"]);
-Route::get('/equity/bank/openbankingv2/kyc', [\App\Http\Controllers\EquityBankController::class, "KYC"]);
-Route::get('/equity/bank/openbankingv2/CRB', [\App\Http\Controllers\EquityBankController::class, "CRB"]);
-Route::get('/equity/bank/openbankingv2/billpayment', [\App\Http\Controllers\EquityBankController::class, "billPayment"]);
-Route::get('/equity/bank/openbankingv2/buy/airtime', [\App\Http\Controllers\EquityBankController::class, "byAirtime"]);
+Route::get('/equity/bank/openbankingv3/accessToken', [\App\Http\Controllers\EquityBankController::class, "generateAccessToken"]);
+Route::get('/equity/bank/openbankingv3/billers', [\App\Http\Controllers\EquityBankController::class, "allEquityBankBillers"]);
+Route::get('/equity/bank/openbankingv3/merchants', [\App\Http\Controllers\EquityBankController::class, "getAllMerchants"]);
+Route::get('/equity/bank/openbankingv3/kyc', [\App\Http\Controllers\EquityBankController::class, "KYC"]);
+Route::get('/equity/bank/openbankingv3/CRB', [\App\Http\Controllers\EquityBankController::class, "CRB"]);
+Route::get('/equity/bank/openbankingv3/billpayment', [\App\Http\Controllers\EquityBankController::class, "billPayment"]);
+Route::get('/equity/bank/openbankingv3/buy/airtime', [\App\Http\Controllers\EquityBankController::class, "byAirtime"]);
+Route::get('/equity/bank/openbankingv3/sendmoney/ift', [\App\Http\Controllers\EquityBankController::class, "send_money_within_equity"]);
+Route::get('/equity/bank/openbankingv3/sendmoney/toMobileWallets', [\App\Http\Controllers\EquityBankController::class, "transferToMobileWallets"]);
+Route::get('/equity/bank/openbankingv3/sendmoney/swift', [\App\Http\Controllers\EquityBankController::class, "swift"]);
+//MPESA DARAJA V2 APIs
+Route::post('/mpesa/v2/stk', [\App\Http\Controllers\MpesaController::class, "stk"]);
 
+#AIRTEL AFRICA STK PUSH
+Route::get('/airtelafrica/v2/token', [\App\Http\Controllers\AirtelAfricaController::class, "AccessToken"]);

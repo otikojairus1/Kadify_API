@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
-
 class EquityBankController extends Controller
 {
     //this is an endpoint to the equitybank open api banking.. it returns an access token to be
@@ -309,6 +306,188 @@ public function byAirtime(Request $request){
         return response()->json(['responseCode'=>200, "EquityOpenBankingAirtime"=>$resp]);
 }
 
+    public function send_money_within_equity(){
+        $token = EquityBankController::generateAccessToken();
+        $referenceTwo = rand(1000000000000,9999999999999);
+
+        $url = "https://uat.finserve.africa/v3-apis/transaction-api/v3.0/remittance/internalBankTransfer";
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $headers = array(
+        "Authorization: Bearer ".$token,
+        "Content-Type: application/json",
+        "signature: huKUSJ1mKy67ptMCDHgSADgPmN8h6Wm5ZYKfLoTJSHWDtA+i2Ra1e3Wc12Pp3Z/Nk+g2JcTGrvWPVw3BCae9QiFI8YpU+GPvezIOmOJvZupo09khePH2nz8TZGKuR6mRhcXd1RNc4dnE6UQbAeqpqPoXbJwOA+02RtfhSDJeLao9bRat4vGWTAlWe/T+mgzMvudeeIpToZLMvBtUVVlLuZFyQb0GeeW9YOghEqfgyzC+6Gpjtg9lnZfDDdAc3fFnGSZ3S0hgaalK94RZSNuF/7OCFKHm5Rv2Q+X91YSqL3Ka3YKkiDfS8kE2w0/8GsWp5WrZo/n3NUTkFonVvucb6w==",
+        );
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $data = '
+
+        {
+            "source": {
+                "countryCode": "KE",
+                "name": "A N.Other",
+                "accountNumber": "0011547896523"
+            },
+            "destination": {
+                "type": "bank",
+                "countryCode": "KE",
+                "name": "John Doe",
+                "accountNumber": "0022547896523"
+            },
+            "transfer": {
+                "type": "InternalFundsTransfer",
+                "amount": "10000.00",
+                "currencyCode": "KES",
+                "reference": "'.$referenceTwo.'",
+                "date": "2018-08-18",
+                "description": "some remarks here"
+            }
+        }
+
+        ';
+
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+        //for debug only!
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        
+        $resp = curl_exec($curl);
+        $resp = json_decode($resp);
+
+
+
+
+
+        return response()->json(['responseCode'=>200, "EquityOpenBankingIFT"=>$resp]);
+        
+    }
+
+    public function transferToMobileWallets(){
+        $token = EquityBankController::generateAccessToken();
+        $referenceTwo = rand(100000000000,999999999999);
+        $url = "https://uat.finserve.africa/v3-apis/transaction-api/v3.0/remittance/sendmobile";
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $headers = array(
+        "Authorization: Bearer ".$token,
+        "Content-Type: application/json",
+        "signature: huKUSJ1mKy67ptMCDHgSADgPmN8h6Wm5ZYKfLoTJSHWDtA+i2Ra1e3Wc12Pp3Z/Nk+g2JcTGrvWPVw3BCae9QiFI8YpU+GPvezIOmOJvZupo09khePH2nz8TZGKuR6mRhcXd1RNc4dnE6UQbAeqpqPoXbJwOA+02RtfhSDJeLao9bRat4vGWTAlWe/T+mgzMvudeeIpToZLMvBtUVVlLuZFyQb0GeeW9YOghEqfgyzC+6Gpjtg9lnZfDDdAc3fFnGSZ3S0hgaalK94RZSNuF/7OCFKHm5Rv2Q+X91YSqL3Ka3YKkiDfS8kE2w0/8GsWp5WrZo/n3NUTkFonVvucb6w==",
+        );
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $data = '
+        {
+            "source": {
+                "countryCode": "KE",
+                "name": "John Doe",
+                "accountNumber": "0170199740087"
+            },
+            "destination": {
+                "type": "mobile",
+                "countryCode": "KE",
+                "name": "A N.Other",
+                "mobileNumber": "0722753364",
+                "walletName": "Mpesa"
+            },
+            "transfer": {
+                "type": "MobileWallet",
+                "amount": "1000",
+                "currencyCode": "KES",
+                "date": "2022-01-21",
+                "description": "some remarks here",
+                "reference": "564564564654"
+            }
+        }
+
+        ';
+
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+        //for debug only!
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        $resp = curl_exec($curl);
+        $resp = json_decode($resp);
+
+return response()->json(['responseCode'=>200, "EquityOpenBankingTransferToMobileWallet"=>$resp]);
+
+    }
+
+    public function swift(){
+        $token = EquityBankController::generateAccessToken();
+        $url = "https://uat.finserve.africa/v3-apis/transaction-api/v3.0/remittance/swift";
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $headers = array(
+        "Authorization: Bearer ".$token,
+        "Content-Type: application/json",
+        "signature: huKUSJ1mKy67ptMCDHgSADgPmN8h6Wm5ZYKfLoTJSHWDtA+i2Ra1e3Wc12Pp3Z/Nk+g2JcTGrvWPVw3BCae9QiFI8YpU+GPvezIOmOJvZupo09khePH2nz8TZGKuR6mRhcXd1RNc4dnE6UQbAeqpqPoXbJwOA+02RtfhSDJeLao9bRat4vGWTAlWe/T+mgzMvudeeIpToZLMvBtUVVlLuZFyQb0GeeW9YOghEqfgyzC+6Gpjtg9lnZfDDdAc3fFnGSZ3S0hgaalK94RZSNuF/7OCFKHm5Rv2Q+X91YSqL3Ka3YKkiDfS8kE2w0/8GsWp5WrZo/n3NUTkFonVvucb6w==",
+        );
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $data = '
+
+        {
+            "source": {
+                "countryCode": "KE",
+                "name": "John Doe",
+                "accountNumber": "0011547896523",
+                "sourceCurrency":"KES"
+            },
+            "destination": {
+                "type": "bank",
+                "countryCode": "US",
+                "name": "A N.Other",
+                "bankBic": "BOTKJPJTXXX",
+                "accountNumber": "12365489",
+                "addressline1": "Post Box 56",
+                "currency":"USD"
+            },
+            "transfer": {
+                "type": "SWIFT",
+                "amount": "10000.00",
+                "currencyCode": "USD",
+                "reference": "692194625798",
+                "date": "2018-08-16",
+                "description": "some description here",
+                "chargeOption": "SELF"
+            }
+        }
+        ';
+
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+        //for debug only!
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        $resp = curl_exec($curl);
+        $resp = json_decode($resp);
+
+        return response()->json(['responseCode'=>200, "EquityOpenBankingSwiftTransfer"=>$resp]);
+   
+}
 
 
 
