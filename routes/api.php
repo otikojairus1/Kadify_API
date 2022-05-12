@@ -29,3 +29,4 @@ Route::post('/mpesa/v2/stk', [\App\Http\Controllers\MpesaController::class, "stk
 
 #AIRTEL AFRICA STK PUSH
 Route::get('/airtelafrica/v2/token', [\App\Http\Controllers\AirtelAfricaController::class, "AccessToken"]);
+Route::get('/coopbank/v2/token', [\App\Http\Controllers\COOPBANKController::class, "access_token"]);

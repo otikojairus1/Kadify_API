@@ -23,7 +23,7 @@ class AirtelAfricaController extends Controller
         $data = '
         {
             "client_id": "5767d245-a3f5-4f88-844a-0c7a8d37e0b4",
-            "client_secret": "****************************",
+            "client_secret": "5767d245-a3f5-4f88-844a-0c7a8d37e0b4",
             "grant_type": "client_credentials"
       }
         ';
