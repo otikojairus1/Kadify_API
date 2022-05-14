@@ -30,3 +30,7 @@ Route::post('/mpesa/v2/stk', [\App\Http\Controllers\MpesaController::class, "stk
 #AIRTEL AFRICA STK PUSH
 Route::get('/airtelafrica/v2/token', [\App\Http\Controllers\AirtelAfricaController::class, "AccessToken"]);
 Route::get('/coopbank/v2/token', [\App\Http\Controllers\COOPBANKController::class, "access_token"]);
+
+#DPO GROUP
+Route::get('/dpo', [\App\Http\Controllers\DPOcontroller::class, "access_token"]);
+Route::get('/verify/payment', [\App\Http\Controllers\DPOcontroller::class, "verify_token"]);
