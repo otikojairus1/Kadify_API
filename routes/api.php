@@ -34,3 +34,8 @@ Route::get('/coopbank/v2/token', [\App\Http\Controllers\COOPBANKController::clas
 #DPO GROUP
 Route::get('/dpo', [\App\Http\Controllers\DPOcontroller::class, "access_token"]);
 Route::get('/verify/payment', [\App\Http\Controllers\DPOcontroller::class, "verify_token"]);
+
+// card creation endpoints
+Route::post('/add/card', [\App\Http\Controllers\CardController::class, "create_card"]);
+Route::post('/get/card', [\App\Http\Controllers\CardController::class, "get_card"]);
+
