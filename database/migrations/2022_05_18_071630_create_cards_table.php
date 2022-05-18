@@ -23,12 +23,15 @@ return new class extends Migration
             $table->string('transactionsno');
             $table->string('banktype');
             $table->string('email');
+            $table->string('merchant_allowed');
+
             $table->integer('security_code');
             $table->integer('card_no');
             $table->boolean('contactless_payment');
             $table->boolean('merchant_lock');
             $table->boolean('friends_withdrawal');
             $table->boolean('geo_lock');
+
             $table->boolean('deactivate_card');
             $table->timestamps();
         });

@@ -58,7 +58,7 @@ class UserController extends Controller
             return response()->json(['success' => false, 'error' => $validator->messages()]);
         }
     
-        $user     = User::create(['fullName' => $request->fullName, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+        $user     = User::create(['fullName' => $request->fullName, 'email' => $request->email, 'balance'=>0, 'password' => Hash::make($request->password)]);
         //$token = $request->name->createToken('accessToken');
         return response()->json(['responseCode' => 200, 'message' => 'user has registered successfully.']);
      
@@ -101,9 +101,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function getuser(Request $request)
     {
-        
+        $userDetails = User::where('email', $request->email)->first();
+        return response()->json(["response"=>200, "user"=>$userDetails]);
     }
 
     /**
@@ -167,7 +168,7 @@ class UserController extends Controller
             return response()->json(['success' => false, 'error' => $validator->messages()]);
         }
 
-        User::create(['fullName' => $request->fullName, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+        User::create(['fullName' => $request->fullName, 'balance'=>0,'email' => $request->email, 'password' => Hash::make($request->password)]);
         //$token = $request->name->createToken('accessToken');
        // return response()->json(['responseCode' => 200, 'message' => 'user has registered successfully.']);
 

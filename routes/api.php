@@ -12,6 +12,8 @@ Route::post('/verify/email/otp', [\App\Http\Controllers\UserController::class, "
 //USER AUTHENTICATION ENDPOINTS
 Route::post('/register', [\App\Http\Controllers\UserController::class, "register"]);
 Route::post('/login', [\App\Http\Controllers\UserController::class, "login"]);
+Route::post('/get/userdetails', [\App\Http\Controllers\UserController::class, "getuser"]);
+
 Route::post('/update/verified/phone', [\App\Http\Controllers\UserController::class, "updatephone"]);
 //EQUITY BANK OF KENYA OPEN BANKING V3 (THE JENGAV3 OPEN BANKING APIs)
 Route::get('/equity/bank/openbankingv3/accessToken', [\App\Http\Controllers\EquityBankController::class, "generateAccessToken"]);
@@ -38,4 +40,8 @@ Route::get('/verify/payment', [\App\Http\Controllers\DPOcontroller::class, "veri
 // card creation endpoints
 Route::post('/add/card', [\App\Http\Controllers\CardController::class, "create_card"]);
 Route::post('/get/card', [\App\Http\Controllers\CardController::class, "get_card"]);
+Route::post('/send/payment/card', [\App\Http\Controllers\CardController::class, "send_card"]);
+Route::post('/delete/card', [\App\Http\Controllers\CardController::class, "delete_card"]);
+Route::post('/card/transactions', [\App\Http\Controllers\CardController::class, "get_card_transactions_outgoing"]);
+
 
