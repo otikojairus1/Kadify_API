@@ -3,10 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DPOcontroller extends Controller
 {
-    public function access_token(){
+    public function access_token(Request $request){
+
+      $rules = [
+          
+         'amount' => 'required',
+         'firstname'    => 'required',
+         'lastname'    => 'required',
+         'email'    => 'required | email',
+     ];
+ 
+     $input     = $request->only('amount','firstname', 'lastname','email');
+     $validator = Validator::make($input, $rules);
+ 
+     if ($validator->fails()) {
+         return response()->json(['responseCode' => 401, 'error' => $validator->messages()]);
+     }
+
+
+      // end of route protection
 
 $url = "https://secure.3gdirectpay.com/API/v6/";
 
@@ -27,7 +46,7 @@ $data = '
 <CompanyToken>8D3DA73D-9D7F-4E09-96D4-3D44E7A83EA3</CompanyToken>
 <Request>createToken</Request>
 <Transaction>
-<PaymentAmount>1.00</PaymentAmount>
+<PaymentAmount>'.$request->amount.'</PaymentAmount>
 <PaymentCurrency>KES</PaymentCurrency>
 <CompanyRef>49FKEOA</CompanyRef>
 <RedirectURL>http://www.google.com/</RedirectURL>
@@ -36,12 +55,12 @@ $data = '
 <CompanyRefUnique>0</CompanyRefUnique>
 <PTL>15</PTL>
 <PTLtype>hours</PTLtype>
-<customerFirstName>Otiko</customerFirstName>
-<customerLastName>JAirus</customerLastName>
+<customerFirstName>'.$request->firstname.'</customerFirstName>
+<customerLastName>'.$request->lastname.'</customerLastName>
 <customerZip>254</customerZip>
 <customerCity>Nairobi</customerCity>
 <customerCountry>KE</customerCountry>
-<customerEmail>otikojairus@gmail.com</customerEmail>
+<customerEmail>'.$request->email.'</customerEmail>
 </Transaction>
 <Services>
 <Service>

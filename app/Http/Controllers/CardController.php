@@ -6,6 +6,7 @@ use \Mailjet\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Card;
+use App\Models\User;
 use App\Models\cardTransaction;
 class CardController extends Controller
 {
@@ -213,6 +214,44 @@ $card_security = mt_rand(100,999);
         $card = Card::where('card_no', $request->card_no)->first();
         $card->delete();
         return response()->json(['success' => true, 'data' => "card deleted successfully"]);
+
+    }
+
+     public function update_balance(Request $request)
+    {
+        # code...
+        $rules = ['phone' => 'required|integer' , 'amount'=>'required|integer'];
+        $input     = $request->only('phone', 'amount');
+       $validator = Validator::make($input, $rules);
+    
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'error' => $validator->messages()]);
+        }
+
+        $user = User::where('phone', $request->phone)->first();
+        $user->balance = $user->balance + $request->amount;
+        $user->save();
+
+        return response()->json(['success' => true, 'data' => "balance updated successfully"]);
+        
+    }
+
+
+    public function update_bank_balance (Request $request){
+        $rules = ['email' => 'required' , 'amount'=>'required|integer'];
+        $input     = $request->only('email', 'amount');
+       $validator = Validator::make($input, $rules);
+    
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'error' => $validator->messages()]);
+        }
+        $user = User::where('email', $request->email)->first();
+        $user->balance = $user->balance + $request->amount;
+        $user->save();
+
+        return response()->json(['success' => true, 'data' => "balance updated successfully"]);
+        
+
 
     }
 }

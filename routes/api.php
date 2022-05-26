@@ -34,7 +34,7 @@ Route::get('/airtelafrica/v2/token', [\App\Http\Controllers\AirtelAfricaControll
 Route::get('/coopbank/v2/token', [\App\Http\Controllers\COOPBANKController::class, "access_token"]);
 
 #DPO GROUP
-Route::get('/dpo', [\App\Http\Controllers\DPOcontroller::class, "access_token"]);
+Route::post('/dpo', [\App\Http\Controllers\DPOcontroller::class, "access_token"]);
 Route::get('/verify/payment', [\App\Http\Controllers\DPOcontroller::class, "verify_token"]);
 
 // card creation endpoints
@@ -42,6 +42,11 @@ Route::post('/add/card', [\App\Http\Controllers\CardController::class, "create_c
 Route::post('/get/card', [\App\Http\Controllers\CardController::class, "get_card"]);
 Route::post('/send/payment/card', [\App\Http\Controllers\CardController::class, "send_card"]);
 Route::post('/delete/card', [\App\Http\Controllers\CardController::class, "delete_card"]);
+Route::post('/update/balance', [\App\Http\Controllers\CardController::class, "update_balance"]);
+Route::post('/update/balance/bank', [\App\Http\Controllers\CardController::class, "update_bank_balance"]);
+
+
+
 Route::post('/card/transactions', [\App\Http\Controllers\CardController::class, "get_card_transactions_outgoing"]);
 
 
