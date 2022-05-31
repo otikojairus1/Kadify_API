@@ -24,14 +24,14 @@ class CardController extends Controller
             'geo_lock'    => 'required',
             'deactivate_card'    => 'required',
             'card_no'    => 'required|integer',
-            'security_code'    => 'required|integer',
+          
             'email' => 'required',
             'merchant_allowed'    => 'required'
         ];
     
-        $input     = $request->only('description', 'expiry','name', 'email','merchant_allowed',
+        $input     = $request->only('description', 'expiry','name','merchant_allowed',
         'balance','transactionsno','banktype','contactless_payment',
-    'merchant_lock','friends_withdrawal', 'geo_lock','deactivate_card','card_no','security_code','email'
+    'merchant_lock','friends_withdrawal', 'geo_lock','deactivate_card','card_no','email'
     
     );
         $validator = Validator::make($input, $rules);
@@ -39,15 +39,16 @@ class CardController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'error' => $validator->messages()]);
         }
+        $card_security = mt_rand(100,999);
 
         $createdCard = Card::create(['description'=>$request->description, 'merchant_allowed'=>$request->merchant_allowed,
     'expiry'=>$request->expiry, 'name'=>$request->name, 'balance'=>$request->balance, 'transactionsno'=>$request->transactionsno,
 'banktype'=>$request->banktype, 'contactless_payment'=>$request->contactless_payment, 'merchant_lock'=>$request->merchant_lock,
 'friends_withdrawal'=>$request->friends_withdrawal, 'geo_lock'=>$request->geo_lock,'deactivate_card'=>$request->deactivate_card,
-'card_no' => $request->card_no,'security_code'=>$request->security_code,'email'=>$request->email,]);
+'card_no' => $request->card_no,'security_code'=>$card_security,'email'=>$request->email,]);
 
 // notify user of card creation 
-$card_security = mt_rand(100,999);
+
 
             $mj = new \Mailjet\Client('69ad231aaa1cba22e074fd1b8e1b2121','e36b81e521e64549bcf20980e67b606a',true,['version' => 'v3.1']);
             $body = [
