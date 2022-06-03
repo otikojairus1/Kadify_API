@@ -99,10 +99,11 @@ class CardController extends Controller
             'receiver_card' => 'required|integer',
             'sender_card' => 'required|integer',
             'amount' =>'required|integer',
-            'email' => 'required'
+            'email' => 'required',
+            "merchant_type"=>"required"
 
         ];
-        $input     = $request->only('receiver_card','sender_card','amount','email');
+        $input     = $request->only('receiver_card','sender_card','merchant_type','amount','email');
        $validator = Validator::make($input, $rules);
     
         if ($validator->fails()) {

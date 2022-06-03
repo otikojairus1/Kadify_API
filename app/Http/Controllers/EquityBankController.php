@@ -46,12 +46,10 @@ $responce = json_decode($resp)->accessToken;
     // equitybank billers.
 
     public function allEquityBankBillers(){
-      //  $page= 1;
-
+        //$page= 1;
         //get an accessToken
-        $token = EquityBankController::generateAccessToken();
+            $token = EquityBankController::generateAccessToken();
             $url = "https://uat.finserve.africa/v3-apis/transaction-api/v3.0/billers?page=1&per_page=20&category=utilities";
-
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -195,8 +193,9 @@ public function CRB(){
 public function billPayment(Request $request){
     $rules = ['amount' => 'required | integer',
     'name' => 'required ',
+    'billerCode'=> 'required'
 ];
-    $input     = $request->only('amount', 'name');
+    $input     = $request->only('amount', 'name','billerCode' );
     $validator = Validator::make($input, $rules);
     if ($validator->fails()) {
         return response()->json(['success' => false, 'error' => $validator->messages()]);
@@ -219,7 +218,7 @@ $referenceTwo = rand(1000000000000,9999999999999);
 $data = '
 {
      "biller": {
-          "billerCode": "320320",
+          "billerCode": "'.$request->billerCode.'",
           "countryCode": "KE"
      },
      "bill": {
@@ -460,11 +459,12 @@ return response()->json(['responseCode'=>200, "EquityOpenBankingTransferToMobile
                 "bankBic": "BOTKJPJTXXX",
                 "accountNumber": "12365489",
                 "addressline1": "Post Box 56",
+                "currencyCode":"USD",
                 "currency":"USD"
             },
             "transfer": {
                 "type": "SWIFT",
-                "amount": "10000.00",
+                "amount": "100.00",
                 "currencyCode": "USD",
                 "reference": "692194625798",
                 "date": "2018-08-16",
@@ -484,8 +484,13 @@ return response()->json(['responseCode'=>200, "EquityOpenBankingTransferToMobile
         curl_close($curl);
         $resp = curl_exec($curl);
         $resp = json_decode($resp);
-
-        return response()->json(['responseCode'=>200, "EquityOpenBankingSwiftTransfer"=>$resp]);
+        $reference= rand(100000000000,999999999999);
+        $equityRes = [
+            "transactionId"=>$reference,
+            "status"=> "SUCCESS"
+            
+        ];
+        return response()->json(['responseCode'=>200, "EquityOpenBankingSwiftTransfer"=>$resp,'equityRes'=>$equityRes]);
    
 }
 
